@@ -46,7 +46,7 @@ fi
 
 prepare() {
     mkdir -p ${HOME}
-    chown -R ${USER}:${GROUP} ${HOME}
+    find ${HOME} -print0 | xargs -0 chown ${USER}:${GROUP}
     mkdir -p /var/log/couchdb
     chown -R ${USER}:${GROUP} /var/log/couchdb
     mkdir -p /var/run/couchdb
