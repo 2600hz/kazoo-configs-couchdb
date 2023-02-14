@@ -79,12 +79,10 @@ start() {
 }
 
 stop() {
-    for i in `pidof ${BEAM}`; do
-        if cat /proc/$i/cmdline | grep -Eq "name[^\-]+couchdb"; then
-            kill $i
-            RETVAL=$?
-        fi
-    done
+    if PID=$(find_beam_pid); then
+        kill "$PID"
+        RETVAL=$?
+    fi
 }
 
 restart() {
@@ -93,30 +91,37 @@ restart() {
 }
 
 status() {
-    for i in `pidof ${BEAM}`; do
-        if cat /proc/$i/cmdline | grep -Eq "name[^\-]+couchdb"; then
-            echo "couchdb (pid $i) is running..."
-            if which curl &>/dev/null; then
-                curl localhost:5984/_membership
-            fi
-            RETVAL=0
+    if PID=$(find_beam_pid); then
+        echo "couchdb (pid $PID) is running..."
+
+        if which curl &>/dev/null; then
+            curl localhost:5984/_membership
         fi
-    done
+
+        RETVAL=0
+    fi
     if [ ${RETVAL} -eq 1 ]; then
         echo "couchdb is not running!"
     fi
 }
 
 pid() {
-    for i in `pidof ${BEAM}`; do
-        if cat /proc/$i/cmdline | grep -Eq "name[^\-]+couchdb"; then
-            echo $i
-            RETVAL=0
-        fi
-    done
+    find_beam_pid
+    RETVAL=$?
     if [ ${RETVAL} -eq 1 ]; then
         echo "couchdb is not running!"
     fi
+}
+
+find_beam_pid() {
+    for PID in $(pidof $BEAM); do
+        if tr '\0' ' ' < /proc/"$PID"/cmdline | grep -Eq "name[^\-]+couchdb"; then
+            echo "$PID"
+            return 0
+        fi
+    done
+
+    return 1
 }
 
 case "$1" in
