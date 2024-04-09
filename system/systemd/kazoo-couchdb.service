@@ -1,6 +1,7 @@
 [Unit]
-Description=CouchDB 2 Configured for Kazoo
+Description=CouchDB Configured for Kazoo
 After=network.target
+Wants=network-online.target
 
 [Service]
 Type=forking
