@@ -33,11 +33,6 @@ package:
       cp -r  system/sbin/* %{buildroot}/usr/sbin
       chmod +x %{buildroot}/usr/sbin/*
 
-      mkdir -p %{buildroot}/etc/rsyslog.d
-      rm -rf system/rsyslog.d/1-default-config-override.conf
-      rm -rf system/rsyslog.d/5-rate-limits.conf
-      cp -r  system/rsyslog.d/*.conf %{buildroot}/etc/rsyslog.d
-
       mkdir -p %{buildroot}/etc/logrotate.d
       cp -r  system/logrotate.d/*.conf %{buildroot}/etc/logrotate.d
 
@@ -56,15 +51,13 @@ package:
           path: /etc/kazoo/couchdb
         -
           mode: noreplace
-          path: '/etc/rsyslog.d/*couchdb*'
-        -
-          mode: noreplace
           path: '/etc/logrotate.d/*couchdb*'
         -
           mode: noreplace
           path: '/etc/security/limits.d/*couchdb*'
       path:
         - /usr/sbin/kazoo-couchdb
+        - /usr/sbin/kazoo-run-couchdb
         - /usr/lib/systemd/system/kazoo-couchdb.service
     url: 'http://www.2600hz.org'
     vendor: 2600Hz
@@ -96,11 +89,6 @@ package:
       cp -r  system/sbin/* %{buildroot}/usr/sbin
       chmod +x %{buildroot}/usr/sbin/*
 
-      mkdir -p %{buildroot}/etc/rsyslog.d
-      rm -rf system/rsyslog.d/1-default-config-override.conf
-      rm -rf system/rsyslog.d/5-rate-limits.conf
-      cp -r  system/rsyslog.d/*.conf %{buildroot}/etc/rsyslog.d
-
       mkdir -p %{buildroot}/etc/logrotate.d
       cp -r  system/logrotate.d/*.conf %{buildroot}/etc/logrotate.d
 
@@ -119,15 +107,13 @@ package:
           path: /etc/kazoo/couchdb
         -
           mode: noreplace
-          path: '/etc/rsyslog.d/*couchdb*'
-        -
-          mode: noreplace
           path: '/etc/logrotate.d/*couchdb*'
         -
           mode: noreplace
           path: '/etc/security/limits.d/*couchdb*'
       path:
         - /usr/sbin/kazoo-couchdb
+        - /usr/sbin/kazoo-run-couchdb
         - /usr/lib/systemd/system/kazoo-couchdb.service
     url: 'http://www.2600hz.org'
     vendor: 2600Hz
@@ -159,11 +145,6 @@ package:
       cp -r  system/sbin/* %{buildroot}/usr/sbin
       chmod +x %{buildroot}/usr/sbin/*
 
-      mkdir -p %{buildroot}/etc/rsyslog.d
-      rm -rf system/rsyslog.d/1-default-config-override.conf
-      rm -rf system/rsyslog.d/5-rate-limits.conf
-      cp -r  system/rsyslog.d/*.conf %{buildroot}/etc/rsyslog.d
-
       mkdir -p %{buildroot}/etc/logrotate.d
       cp -r  system/logrotate.d/*.conf %{buildroot}/etc/logrotate.d
 
@@ -182,15 +163,13 @@ package:
           path: /etc/kazoo/couchdb
         -
           mode: noreplace
-          path: '/etc/rsyslog.d/*couchdb*'
-        -
-          mode: noreplace
           path: '/etc/logrotate.d/*couchdb*'
         -
           mode: noreplace
           path: '/etc/security/limits.d/*couchdb*'
       path:
         - /usr/sbin/kazoo-couchdb
+        - /usr/sbin/kazoo-run-couchdb
         - /usr/lib/systemd/system/kazoo-couchdb.service
     url: 'http://www.2600hz.org'
     vendor: 2600Hz
