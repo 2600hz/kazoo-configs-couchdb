@@ -1,18 +1,17 @@
 [Unit]
-Description=CouchDB 2 Configured for Kazoo
-After=network.target
+Description=CouchDB Configured for Kazoo
+After=network-online.target
+Wants=network-online.target
 
 [Service]
-Type=forking
+RuntimeDirectory=couchdb
 User=couchdb
 Group=couchdb
-PermissionsStartOnly=true
+Environment="COUCHDB_ARGS_FILE=/etc/kazoo/couchdb/vm.args"
+ExecStartPre=+/usr/sbin/kazoo-couchdb prepare
+ExecStart=/opt/couchdb/bin/couchdb
+Restart=always
 LimitNOFILE=65536
-LimitCORE=infinity
-ExecStartPre=/usr/sbin/kazoo-couchdb prepare
-ExecStart=/usr/sbin/kazoo-couchdb background
-ExecStop=/usr/sbin/kazoo-couchdb stop
-Restart=on-abort
 
 [Install]
 WantedBy=multi-user.target
