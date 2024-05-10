@@ -1,7 +1,28 @@
-# Each node in the system must have a unique name.  A name can be short
-# (specified using -sname) or it can by fully qualified (-name).  There can be
-# no communication between nodes running with the -sname flag and those running
-# with the -name flag.
+# Each node in the system must have a unique name. These are specified through
+# the Erlang -name flag, which takes the form:
+#
+#    -name nodename@<FQDN>
+#
+# or
+#
+#    -name nodename@<IP-ADDRESS>
+#
+# CouchDB recommends the following values for this flag:
+#
+# 1. If this is a single node, not in a cluster, use:
+#    -name couchdb@127.0.0.1
+#
+# 2. If DNS is configured for this host, use the FQDN, such as:
+#    -name couchdb@my.host.domain.com
+#
+# 3. If DNS isn't configured for this host, use IP addresses only, such as:
+#    -name couchdb@192.168.0.1
+#
+# Do not rely on tricks with /etc/hosts or libresolv to handle anything
+# other than the above 3 approaches correctly. They will not work reliably.
+#
+# Multiple CouchDBs running on the same machine can use couchdb1@, couchdb2@,
+# etc.
 -name couchdb
 
 # All nodes must share the same magic cookie for distributed Erlang to work.
@@ -9,25 +30,26 @@
 # the ~/.erlang.cookie file, for example).
 -setcookie change_me
 
-# Tell SASL not to log progress reports
--sasl errlog_type error
+# Tell kernel and SASL not to log anything
+-kernel error_logger silent
+-sasl sasl_error_logger false
 
 # Use kernel poll functionality if supported by emulator
 +K true
 
 # Start a pool of asynchronous IO threads
-+A 25
-
-# Set the max port value to be the same as limits.d/couchdb.limits
-# +Q 65536
--env ERL_MAX_PORTS 65536
-
--kernel inet_dist_listen_min 11500 inet_dist_listen_max 11999
++A 16
 
 # Comment this line out to enable the interactive Erlang shell on startup
-+Bd -noinput -detached
++Bd -noinput
+
+# Force use of the smp scheduler, fixes #1296
+-smp enable
+
+# Set maximum SSL session lifetime to reap terminated replication readers
+-ssl session_lifetime 300
 
 # This uses CouchDB's default.ini, which gets upgraded with CouchDB.
 # If you want to use a different one, change the first parameter to
 # point to it.
--couch_ini /opt/couchdb/etc/default.ini /etc/kazoo/couchdb/local.ini
+-couch_ini /opt/couchdb/etc/default.ini /etc/kazoo/couchdb/local.d/
