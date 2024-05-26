@@ -1,7 +1,7 @@
 name: kazoo-configs-couchdb
 custom_files: null
 exposure: private
-base_branch: origin/5.3
+base_branch: origin/5.4
 base_core: null
 template: spec.tmpl
 package:
@@ -178,5 +178,5 @@ metapackage:
     name: meta-kazoo-couchdb
     package: kazoo-configs-couchdb
     type: required
-    branch: '5.3'
+    branch: '5.4'
 dependencies: null
